@@ -525,7 +525,7 @@ function systemPrompt(){
     '6. 允许代价惨重的胜利，允许努力后更糟。这是一个残酷的修仙界。',
     '',
     '【专属设定执行】玩家【性格】【体质】【出身】决定世界对其的反馈，务必贴合。',
-    '【内心】narration 中角色内心话用〈〉包裹，须是角色口吻的具体碎念。',
+    '【内心】narration 中角色内心话必须用全角尖括号〈〉包裹（U+3008 / U+3009），不要用半角 < >，不要用引号或括号。须是角色口吻的具体碎念。',
     '【对话】line 只写台词本身，不加引号。',
     '【选项】3个，方向不同（激进/稳妥/出奇招）。',
     '【数值】克制：修为-8~+15，寿元-5~0，心魔-10~+12，灵石±30，声望±10。',
@@ -656,11 +656,11 @@ function addFeedNode(e){
   let el;
   if(e.t === 'narr'){
     el = document.createElement('p');
-    String(e.v).split(/(〈[^〉]*〉)/).forEach(part => {
+    String(e.v).split(/(〈[^〉]*〉|<[^<>\n]{1,80}>)/).forEach(part => {
       if(!part) return;
-      if(part.charAt(0) === '〈'){
+      if(part.charAt(0) === '〈' || part.charAt(0) === '<'){
         const s = document.createElement('span');
-        s.className = 'inner'; s.textContent = part;
+        s.className = 'inner'; s.textContent = '〈' + part.slice(1, -1) + '〉';
         el.appendChild(s);
       } else {
         el.appendChild(document.createTextNode(part));
